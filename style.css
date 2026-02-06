@@ -223,6 +223,15 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 
+
+.highlight {
+    background: #9ce6ff;
+    /*background: linear-gradient(transparent 60%, #9ce6ff 60%);*/
+    padding: 6px 8px;
+    border-radius: 6px;
+}
+
+
 .sentence.highlight.high {
     background: #9ac9eb;
     color: #000;
