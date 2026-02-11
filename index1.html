@@ -97,7 +97,7 @@
         pdfInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            output.textContent = ' لطفا صبور باشید فرایند پردازش کمی طولانی است نسبت به pdf';
+            output.textContent = ' لطفا صبور باشید فرایند پردازش کمی طولانی است نسبت به پی دی اف';
             window.extractPDFTextOCR(file, output)
                 .catch(err => output.textContent = 'خطا: ' + err);
         });
