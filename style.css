@@ -281,7 +281,7 @@ input[type="range"]::-webkit-slider-thumb {
     display: inline-block;
     border-radius: 50%;
 
-    box-shadow: 10px 10px 20px #a3b1c6, -10px -10px 20px #ffffff;
+    box-shadow: 10px 10px 20px #a3b1c6, -10px -10px 20px #cee9f2;
     margin-top: 40px;
     margin-bottom: 10px;
     transition: transform 0.2s ease-in-out;
