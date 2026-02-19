@@ -314,15 +314,51 @@ function render(sentences, set, levels) {
    دکمه بازگشت
 ========================================================= */
 
-function goBack() {
+// function goBack() {
 
+//     highlightPage.style.display = "none";
+//     mainPage.style.display = "block";
+
+//     history.pushState({}, "", window.location.pathname);
+//     content.innerHTML = "";
+//     pdfBtn.style.display = "none";
+// }
+
+
+function goBack() {
+    // نمایش/مخفی کردن صفحات
     highlightPage.style.display = "none";
     mainPage.style.display = "block";
 
-    history.pushState({}, "", window.location.pathname);
+    // پاک کردن محتوای داینامیک
     content.innerHTML = "";
     pdfBtn.style.display = "none";
+
+    // ریست کردن تمام فرم‌ها
+    const forms = document.querySelectorAll("form");
+    forms.forEach(form => form.reset());
+
+    // پاک کردن همه input، textarea و select
+    const inputs = document.querySelectorAll("input, textarea, select");
+    inputs.forEach(el => {
+        el.value = "";       // پاک کردن value
+        if (el.tagName.toLowerCase() === "textarea") {
+            el.innerHTML = ""; // پاک کردن محتوای داخل textarea
+            el.textContent = ""; // force
+        }
+    });
+
+    // پاک کردن stateهای JS
+    for (let key in window) {
+        if (window.hasOwnProperty(key) && key.startsWith("pageState_")) {
+            window[key] = null;
+        }
+    }
+
+    // بازنشانی URL بدون reload واقعی
+    history.pushState({}, "", window.location.pathname);
 }
+
 
 /* =========================================================
    PDF
