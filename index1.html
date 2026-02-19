@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
-    <title>نکتا | پی دی اف به متن </title>
+    <title>نکتا   | پی دی اف به متن </title>
 
 
     <script type="module">
@@ -63,19 +63,19 @@
 
                 // ---------- فیلتر متن‌های اضافی ----------
                 const paragraphs = data.blocks
-                  .map(b => b.text)
-                  .filter(t => {
-                    t = t.trim();
-                    if (!t) return false;
+                    .map(b => b.text)
+                    .filter(t => {
+                        t = t.trim();
+                        if (!t) return false;
 
-                    // حذف متن هایی که شامل کلمات کلیدی مشخص هستند
-                    if (/(تمرین|فعالیت|پاورقی)/i.test(t)) return false;
+                        // حذف متن هایی که شامل کلمات کلیدی مشخص هستند
+                        if (/(تمرین|فعالیت|پاورقی)/i.test(t)) return false;
 
-                    // حذف خطوط جدول
-                    if (/جدول\s*\d+/i.test(t)) return false;
+                        // حذف خطوط جدول
+                        if (/جدول\s*\d+/i.test(t)) return false;
 
-                    return true;
-                });
+                        return true;
+                    });
 
 
 
