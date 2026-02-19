@@ -63,28 +63,20 @@
 
                 // ---------- فیلتر متن‌های اضافی ----------
                 const paragraphs = data.blocks
-                    .map(b => b.text)
-                    .filter(t => {
-                        t = t.trim();
-                        if (!t) return false;
+    .map(b => b.text)
+    .filter(t => {
+        t = t.trim();
+        if (!t) return false;
 
-                        // حذف جملات کوتاه یا نویزی
-                        if (t.length < 8) return false;
+        // حذف متن هایی که شامل کلمات کلیدی مشخص هستند
+        if (/(تمرین|فعالیت|پاورقی)/i.test(t)) return false;
 
-                        // حذف خطوطی که فقط اعداد یا علائم دارند
-                        if (/^[0-9۰-۹\.\,\-\(\)\s]+$/.test(t)) return false;
+        // حذف خطوط جدول
+        if (/جدول\s*\d+/i.test(t)) return false;
 
-                        // حذف خطوط حاوی کلمات کلیدی حتی وسط جمله
-                        if (/(تمرین|فعالیت|جدول|پاورقی)/i.test(t)) return false;
+        return true;
+    });
 
-                        // حذف خطوط که احتمالا تیتر جدول هستند
-                        if (/^(جدول\s*\d+|[0-9۰-۹]+[\-\)]\s)/i.test(t)) return false;
-
-                        // حذف نویز شدید (تقریبا هیچ حرف فارسی ندارد)
-                        if ((t.match(/[آ-ی]/g) || []).length / t.length < 0.5) return false;
-
-                        return true;
-                    });
 
 
                 finalText += fixText(paragraphs.join('\n\n')) + '\n\n';
