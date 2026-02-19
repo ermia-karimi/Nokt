@@ -61,21 +61,17 @@
                     }
                 );
 
-                // ---------- فیلتر متن‌های اضافی ----------
+                // ---------- حذف بخش تمرین/فعالیت/پاورقی/جدول ---------- 
                 const paragraphs = data.blocks
                     .map(b => b.text)
                     .map(bText => {
                         // تقسیم بلوک به خطوط
                         const lines = bText.split('\n');
-                        // حذف خطوط حاوی تمرین/فعالیت/پاورقی/جدول
+                        // حذف خطوط حاوی کلیدواژه‌ها
                         const filtered = lines.filter(line => !/(تمرین|فعالیت|پاورقی|جدول)/i.test(line.trim()));
                         return filtered.join(' ').trim(); // بازگرداندن بلوک پاکسازی شده
                     })
                     .filter(t => t.length > 0); // حذف بلوک‌های کاملاً خالی
-
-
-
-
 
                 finalText += fixText(paragraphs.join('\n\n')) + '\n\n';
                 donePages++;
@@ -87,28 +83,37 @@
 
         /* ---------- اصلاح متن ---------- */
         function fixText(text) {
-            // مرحله 1: اصلاح حروف عربی و نیم‌فاصله
-            text = text.replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/\u200c/g, ' ');
+            // 1. حروف عربی و نیم‌فاصله
+            text = text.replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/\u200c/g, '‌');
 
-            // مرحله 2: اصلاح فاصله و علائم
-            text = text.replace(/\n([\.\!\?\؟\:]+)/g, '$1');
-            text = text.replace(/\s+([\.\!\?\؟\:])/g, '$1');
-            text = text.replace(/([\.\!\?\؟\:])(?=\S)/g, '$1 ');
-            text = text.replace(/([^\.\!\?\؟\:])\n+(?=[آ-ی])/g, '$1 ');
+            // 2. نیم‌فاصله می / نمی
             text = text.replace(/\bمی\s+/g, 'می‌');
             text = text.replace(/\bنمی\s+/g, 'نمی‌');
 
-            // مرحله 3: حذف نویز انگلیسی داخل کلمات فارسی
-            text = text.replace(/([آ-ی])([A-Za-z]+)(?=[آ-ی])/g, '$1');
-
-            // مرحله 4: حذف نویز کامل (فقط حروف فارسی و اعداد)
+            // 3. حذف نویز انگلیسی
+            text = text.replace(/([آ-ی۰-۹])([A-Za-z]+)/g, '$1');
             text = text.replace(/[^آ-ی0-9۰-۹\s\.\!\?\؟\:\,\-\/\(\)«»"']/g, '');
 
-            // مرحله 5: پاکسازی فاصله‌های اضافه
-            text = text.replace(/\s+/g, ' ').trim();
+            // 4. اصلاح فاصله و خطوط
+            text = text.replace(/\n+/g, '\n');       // چند خط خالی → یک خط
+            text = text.replace(/\s+/g, ' ').trim(); // فاصله‌های اضافه
+            text = text.replace(/\n\s+/g, '\n');     // فاصله ابتدای خط
+
+            // 5. اصلاح واژه‌های رایج OCR
+            const corrections = {
+                'د رخت': 'درخت',
+                'با ر': 'بار',
+                'کت اب': 'کتاب',
+                'م ی‌روم': 'می‌روم',
+                // می‌تونی موارد بیشتر اضافه کنی
+            };
+            for (const [wrong, right] of Object.entries(corrections)) {
+                text = text.replaceAll(wrong, right);
+            }
 
             return text;
         }
+
 
 
 
